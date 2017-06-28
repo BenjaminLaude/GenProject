@@ -1,0 +1,12 @@
+C:\Users\Benjamin\AppData\Local\Temporary Projects\XORAlgorithm\bin\Debug\XORAlgorithm.exe.config
+C:\Users\Benjamin\AppData\Local\Temporary Projects\XORAlgorithm\bin\Debug\XORAlgorithm.exe
+C:\Users\Benjamin\AppData\Local\Temporary Projects\XORAlgorithm\bin\Debug\XORAlgorithm.pdb
+C:\Users\Benjamin\AppData\Local\Temporary Projects\XORAlgorithm\obj\Debug\XORAlgorithm.csprojResolveAssemblyReference.cache
+C:\Users\Benjamin\AppData\Local\Temporary Projects\XORAlgorithm\obj\Debug\XORAlgorithm.exe
+C:\Users\Benjamin\AppData\Local\Temporary Projects\XORAlgorithm\obj\Debug\XORAlgorithm.pdb
+C:\Users\Benjamin\Desktop\XORAlgorithm\XORAlgorithm\bin\Debug\XORAlgorithm.exe.config
+C:\Users\Benjamin\Desktop\XORAlgorithm\XORAlgorithm\obj\Debug\XORAlgorithm.exe
+C:\Users\Benjamin\Desktop\XORAlgorithm\XORAlgorithm\obj\Debug\XORAlgorithm.pdb
+C:\Users\Benjamin\Desktop\XORAlgorithm\XORAlgorithm\bin\Debug\XORAlgorithm.exe
+C:\Users\Benjamin\Desktop\XORAlgorithm\XORAlgorithm\bin\Debug\XORAlgorithm.pdb
+C:\Users\Benjamin\Desktop\XORAlgorithm\XORAlgorithm\obj\Debug\XORAlgorithm.csprojResolveAssemblyReference.cache
