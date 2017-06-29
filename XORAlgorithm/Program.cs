@@ -11,42 +11,19 @@ namespace XORAlgorithm
 {
     class Program
     {
-     //   Random alea = new Random();
+        /* Initialize var */
 
-        public int nbrKeyChar = 6;
+        // Change var nbrKeyChar to 3 to decrypt the 2nd file
+        public int nbrKeyChar = 3;
         public string keyChar = "abcdefghijklmnopqrstuvwxyz";
-        //   public string[] keyChar = {"97","98","99","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","118","119","120","121","122"};
-
+        public string endString = "67";
         public List<string> words;
-
+        // Change var key to { 0, 0, -1} to decrypt the 2nd file
+        int[] key = { 0, 0, -1 };
 
         static void Main(string[] args)
         {
             Program program = new Program();
-            /*
-            Program p = new Program();
-            int key = 0;
-            
-            //string data = "test";
-            string textToEncrypt = System.IO.File.ReadAllText(@"C:\Users\Benjamin\Desktop\P1G.txt", Encoding.UTF8);
-            //string textToEncrypt = "michel tej";
-           // Console.WriteLine(keyChar.Length +" : " + nbrKeyChar);
-            double maxIteration = Math.Pow(keyChar.Length, nbrKeyChar);
-           // Console.WriteLine("max i : " + maxIteration);
-            for (uint i = 0; i < maxIteration; i++)
-            {
-               
-                string keyTest = p.FindKey();
-                //Console.WriteLine(i + " : " + keyTest.ToString());
-                string resultat = p.EncryptDecrypt(textToEncrypt, keyTest);
-                string lines = resultat +"\n\r";
-               // System.IO.StreamWriter file = new System.IO.StreamWriter("c:\\Users\\Benjamin\\result-filetodecrypt.txt", true);
-               // file.WriteLine(lines, Encoding.UTF8);
-               // file.Close();
-                System.IO.File.AppendAllText("c:\\Users\\Benjamin\\resultinging-filetodecrypt.txt", lines + Environment.NewLine, Encoding.UTF8);
-            }
-
-            Console.WriteLine("Hello"); Console.ReadLine();*/
         }
 
         public Program()
@@ -56,26 +33,33 @@ namespace XORAlgorithm
             this.words = dbConnect.Select();
 
             // get file content
-            // TODO
-            string textToEncrypt = System.IO.File.ReadAllText(@"C:\Users\Benjamin\Desktop\P1E.txt", Encoding.UTF8);
+            string textToDecrypt = System.IO.File.ReadAllText(@"C:\Users\Benjamin\Desktop\P1F.txt", Encoding.UTF8);
 
             Char delimiter = ' ';
+
+            // get the maximum of iteration possible
             double maxIteration = Math.Pow(keyChar.Length, nbrKeyChar);
-            int totalCount = 0;
-            int totalCounts = 0;
+
             for (uint i = 0; i < maxIteration; i++)
             {
-
+                // get the key to decrypt the files
                 string keyTest = FindKey();
-                string resultat = EncryptDecrypt(textToEncrypt, keyTest);
+                
+                //uncomment the following line if you want to decrypt the second file :
+                //keyTest = keyTest + endString;
+
+                //uncomment the following line if you want to decrypt the first file :
+                //keyTest = "fju" + keyTest;
+
+                
+                // get the result of the file decryption
+                string resultat = Decrypt(textToDecrypt, keyTest);
+
+                // split the content of resultat according to the delimiter chosen
                 string[] allWords = resultat.Split(delimiter);
-                int count=0;
+                float count=0;
 
-                if (totalCounts >=254300000) 
-                {
-                    Console.WriteLine(keyTest);
-                }
-
+                // check if current word is part of the dictionnary (var words)
                 if (allWords.Length > 1)
                 {
                     for (int y = 0; y < allWords.Length; y++)
@@ -86,59 +70,46 @@ namespace XORAlgorithm
                         }
                     }
                 }
-                int ratio = count / allWords.Length;
-                if (ratio > 0.1) 
+
+                //Console.WriteLine(count);
+                double ratio = count / allWords.Length;
+
+                // save the result into a file
+                
+                if (ratio > 0.6)
                 {
-                   
-                    System.IO.File.AppendAllText("c:\\Users\\Benjamin\\resultinging-filetodecrypt.txt", resultat + Environment.NewLine, Encoding.UTF8);
-                }
-                totalCount++;
-                if (totalCount >= 10000) 
-                {
-                    totalCounts += totalCount;
-                    totalCount = 0;
-                    Console.WriteLine(totalCounts);
+                    System.IO.File.AppendAllText("c:\\Users\\Benjamin\\FileDecrypted\\resultat.txt", resultat, Encoding.UTF8);
+                    Console.Read();
                 }
             }
-
-            Console.Read();
+            
         }
 
-    
-        /*private int GenerateKey()
-        {
-            string response = "";
-            string caracteres = "0123456789";
-            int length = 6;
-            
-            for (int x = 0; x < length; x++)
-            {
-                response += caracteres[alea.Next(0, caracteres.Length)];
-            }
-
-            Console.WriteLine("eeeeeeeee : " + response);
-            return Convert.ToInt32(response);
-        }*/
-
-        int[] key = {0,0,0,0,0,-1};
+        /*
+         
+         * Function FindKey() which return the key to decrypt the files.
+         
+         */
 
         private string FindKey()
         {
-            string caracteres = "abcdefghijklmnopqrstuvwxyz";
-            int length = 6;
             string response = "";
+            key = Generate(key, nbrKeyChar - 1, keyChar.Length - 1);
 
-            key = test(key, length -1, caracteres.Length - 1);
-          //  Console.WriteLine(key[5]);
-            for (int i = 0; i < length; i++) 
+            for (int i = 0; i < nbrKeyChar; i++) 
             {
-                response += caracteres[key[i]];
+                response += keyChar[key[i]];
             }
-
             return response;
         }
 
-        private int[] test(int[] key, int current, int length)  
+        /*
+         
+         * Function generating the key
+
+         */
+
+        private int[] Generate(int[] key, int current, int length)  
         {
             if (key[current] != length) 
             {
@@ -149,109 +120,25 @@ namespace XORAlgorithm
             {
                 if (current == 0) return null;
                 key[current] = 1;
-                return test(key, current - 1, length);
+                return Generate(key, current - 1, length);
             }
         }
 
-        //    {
-           /* string[] caracteres = {"97","98","99","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","118","119","120","121","122"};
-            int length = 6;
-            string response = "";
-           // string result = "";
-            for (int x = 0; x < length; x++)    1002927200
-            {
-                response += caracteres[alea.Next(0, 26)];
-               // Console.WriteLine(result);
-              /*  string[] newTab = new string[response.Length + 1];
-                newTab[x] = result;
-                response.CopyTo(newTab, 0);
-                response = newTab;*/
-             //   Console.WriteLine(response);
-     //       }
-           // Console.WriteLine("----------------------" + response);
-           
-          //  return response
-   //    }
-
-       /* private byte[] FindKey()
-        {
-            byte[] caracteres = { 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122 };
-            int length = 6;
-            byte[] response = { };
-            byte result = 0;
-            for (int x = 0; x < length; x++)
-            {
-                result = caracteres[alea.Next(0, 26)];
-                // Console.WriteLine(result);
-                byte[] newTab = new byte[response.Length + 1];
-                newTab[x] = result;
-                response.CopyTo(newTab, 0);
-                response = newTab;
-                //   Console.WriteLine(response);
-            }
-            // Console.WriteLine("----------------------" + response);
-            return response;
-        }*/
-
-        /*private int generateNumber()
-        {
+        /*
          
-        }*/
+         * Function allowing the Decryption of the file.
+         * Add to a stringBuilder the value after having passed by the XOR Algorithm
+         * Returns string result
+         
+         */
 
-        private string EncryptDecrypt(string textToEncrypt, string key)
+        private string Decrypt(string textToDecrypt, string key)
         {
-           /* byte[] key = response;
-           
-            //string test = Convert.ToString(key[0]) + Convert.ToString(key[1]);
-            
-           // long mykey = Convert.ToInt64(test);
-
-            StringBuilder inSb = new StringBuilder(textToEncrypt);
-            
-            StringBuilder outSb = new StringBuilder(textToEncrypt.Length);
-            char c;
-            for (int i = 0; i < textToEncrypt.Length; i++)
-            {
-                /*c = inSb[i];
-                c = (char)(c ^ key[]);
-                outSb.Append(c);
-
-            }
-            return outSb.ToString();*/
-
-
             StringBuilder result = new StringBuilder();
-
-            for (int c = 0; c < textToEncrypt.Length; c++)
-                result.Append((char)((uint)textToEncrypt[c] ^ (uint)key[c % key.Length]));
+            for (int c = 0; c < textToDecrypt.Length; c++)
+                result.Append((char)((uint)textToDecrypt[c] ^ (uint)key[c % key.Length]));
 
             return result.ToString();
-        } 
-
-        private bool checkChar(long value)
-        {
-            try
-            {
-                var c = Convert.ToChar(value);
-                return true;
-            }
-            catch (InvalidCastException)
-            {
-                return false;
-            }
-            catch (FormatException)
-            {
-                return false;
-            }
-            catch (OverflowException)
-            {
-                return false;
-            }
-            catch (ArgumentNullException)
-            {
-                return false;
-            }
         }
-
-  }
+    }
 }
